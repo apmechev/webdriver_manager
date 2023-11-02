@@ -4,6 +4,8 @@ import sys
 from webdriver_manager.core.utils import linux_browser_apps_to_cmd, windows_browser_apps_to_cmd, \
     read_version_from_cmd
 
+class BrowserNotFound(Exception):
+    pass
 
 class ChromeType(object):
     GOOGLE = "google-chrome"
@@ -158,6 +160,5 @@ class OperationSystemManager(object):
             pattern = PATTERN[browser_type]
             version = read_version_from_cmd(cmd_mapping, pattern)
             return version
-        except Exception:
-            return None
-            # raise Exception("Can not get browser version from OS")
+        except BrowserNotFound:
+            raise BrowserNotFound(f"Browser {browser_type} not found on your system")
